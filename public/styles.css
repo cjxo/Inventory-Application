@@ -1,0 +1,111 @@
+@font-face {
+  font-family: "PressStart";
+  src: url("./fonts/PressStart2P-Regular.ttf")
+}
+
+:root {
+}
+
+body {
+  font-family: "PressStart";
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+button {
+  cursor: pointer;
+  font-family: "PressStart";
+  background-color: transparent;
+  border: 1px solid transparent;
+}
+
+ul {
+  padding-left: 0px;
+  margin: 0px;
+}
+
+li {
+  list-style-type: none;
+}
+
+h2 {
+  margin: 0px;
+  font-size: 16px;
+}
+
+header {
+  margin-bottom: 24px;
+}
+
+.player-img {
+  width: 128px;
+  height: 128px;
+  border: 1px solid black;
+
+  margin-bottom: 4px;
+}
+
+.player-level {
+  color: #247d33;
+}
+
+.player-exp {
+  color: #60a16b;
+}
+
+.player-card-as-li {
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid red;
+}
+
+nav {
+  flex-grow: 1;
+}
+
+.nav-bar button {
+  color: #4c799e;
+}
+
+.nav-bar button::before {
+  content: "[";
+}
+
+.nav-bar button::after {
+  content: "]";
+}
+
+
+.nav-bar > li.selected > button,
+.nav-bar button:hover {
+  color: #1c41ba;
+}
+
+.nav-bar > li.selected > button::before,
+.nav-bar button:hover::before {
+  content: "[ ";
+}
+
+.nav-bar > li.selected > button::after,
+.nav-bar button:hover::after {
+  content: " ]";
+}
+
+.nav-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.display-content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  border: 1px solid black;
+  flex-grow: 5;
+}
+
+main {
+  display: flex;
+}

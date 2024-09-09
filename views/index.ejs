@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+  <head>
+    <title>Inventory Application</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <header>
+      Inventory Application
+    </header>
+    <main>
+      <nav>
+        <ul class="nav-bar">
+          <li class="selected"><button>Players</button></li>
+          <li><button>All Items</button></li>
+          <li><button>Food</button></li>
+          <li><button>Potion</button></li>
+          <li><button>Weapon</button></li>
+        </ul>
+      </nav>
+      <ul class="display-content-grid">
+      <% if (locals.players) { %>
+        <% players.forEach(player => { %>
+          <li class="player-card-as-li">
+            <!-- TODO: actual pixel art player image -->
+            <div class="player-img">
+            </div>
+            <h2>
+              <%= player.username %>
+            <h2>
+            <div class="player-level">
+              Lvl <%= player.level %>
+            </div>
+            <div class="player-exp">
+              Exp <%= player.experience %> / <%= player.maxExperience %>
+            </div>
+          </li>
+        <% }); %>
+      <% } %>
+      </ul>
+    </main>
+  </body>
+</html>
