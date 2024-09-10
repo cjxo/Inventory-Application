@@ -77,7 +77,6 @@ function addOrUpdateItemToPlayer(id, player_id, item_id, quantity) {
 
 function getMaxExpWithRespectToLevel(level) {
   const result = (5 * level * level * level) / 4;
-  console.log(result);
   return Math.floor(result);
 }
 
@@ -94,6 +93,34 @@ const indexMainPage = (request, response) => {
   response.render("index", { players: getAllPlayers() });
 };
 
+const indexDisplayPlayerInventory = (request, response) => {
+  const playerID = parseInt(request.params.id);
+  const result = PlayerItems.filter((element) => {
+    return element.player_id === playerID;
+  });
+
+  const resultItems = [];
+  if (result !== undefined) {
+    result.forEach(entry => {
+      resultItems.push({
+        name: Items[entry.item_id - 1].name,
+        quantity: entry.quantity,
+        description: Items[entry.item_id - 1].description,
+      });
+    });
+  }
+
+  const player = Players[playerID - 1];
+  response.render("index", { 
+    playerItems: resultItems, 
+    player: { 
+      ...player,
+      maxExperience: getMaxExpWithRespectToLevel(player.level)
+    },
+  });
+};
+
 module.exports = {
   indexMainPage,
+  indexDisplayPlayerInventory,
 };
