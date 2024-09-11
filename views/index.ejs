@@ -8,16 +8,19 @@
 
   <body>
     <header>
-      Inventory Application
+      <h1>
+        Inventory Application
+      </h1>
     </header>
     <main>
+      <div class="main-wrapper">
       <nav>
         <ul class="nav-bar">
           <li class="selected"><a href="/">Players</a></li>
-          <li><a href="#">All Items</a></li>
-          <li><a href="#">Food</a></li>
-          <li><a href="#">Potion</a></li>
-          <li><a href="#">Weapon</a></li>
+          <li><a href="/items">All Items</a></li>
+          <li><a href="/foods">Food</a></li>
+          <li><a href="/potions">Potion</a></li>
+          <li><a href="/weapons">Weapon</a></li>
         </ul>
       </nav>
       <% if (locals.players) { %>
@@ -31,12 +34,12 @@
               </div>
               <h2>
                 <a class="player-username" href="<%= player.id %>/inventory"><%= player.username %></a>
-              <h2>
+              </h2>
               <div class="player-level">
                 Lvl <%= player.level %>
               </div>
               <div class="player-exp">
-                Exp <%= player.experience %> / <%= player.maxExperience %>
+                Exp <%= player.experience %>/<%= player.maxExperience %>
               </div>
             </li>
           <% }); %>
@@ -85,7 +88,19 @@
               </section>
             </section>
           </section>
-        <% } %>
+          <% } else if (locals.allItems) { %>
+          <section class="all-items">
+            <h1 class="section-title">&lt; All Items &gt;</h1>
+            <ul class="listings">
+              <% allItems.forEach(item => { %>
+              <li>
+                <%= item.name %>
+              </li>
+              <% }); %>
+            </ul>
+          </section>
+          <% } %>
+      </div>
     </main>
   </body>
 </html>

@@ -7,9 +7,9 @@ const Players = [
 ];
 
 const Categories = [
-  createCategory(1, "potion", "A liquid that can be drank, usually once, immediately invoking special effects to the player who drank it."),
-  createCategory(2, "weapon", "An item that can enhance the performance of the welder."),
-  createCategory(3, "food", "An item that prevents the consumer from starving. It also helps in regeneration.")
+  createCategory(1, "Potion", "A liquid that can be drank, usually once, immediately invoking special effects to the player who drank it."),
+  createCategory(2, "Weapon", "An item that can enhance the performance of the welder."),
+  createCategory(3, "Food", "An item that prevents the consumer from starving. It also helps in regeneration.")
 ];
 
 const Items = [
@@ -89,6 +89,16 @@ function getAllPlayers() {
   });
 }
 
+function getItemsFiltered(category) {
+  const result = Items.map(item => ({ ...item, category: Categories[item.category_id - 1].name}));
+
+  if (category !== null) {
+    return result.filter(item => item.category.toLowerCase() === category.toLowerCase());
+  } else {
+    return result;
+  }
+}
+
 const indexMainPage = (request, response) => {
   response.render("index", { players: getAllPlayers() });
 };
@@ -120,7 +130,19 @@ const indexDisplayPlayerInventory = (request, response) => {
   });
 };
 
+const indexDisplayItems = (request, response) => {
+    const category = request.params.category;
+  if (["weapons", "potions", "foods"].includes(category)) {
+    response.render("index", { allItems: getItemsFiltered(category.slice(0, category.length - 1)) });
+  } else if (category === "items") {
+    response.render("index", { allItems: getItemsFiltered(null) });
+  } else {
+    response.status(404).send("Unable to GET /" + request.params.category);
+  }
+};
+
 module.exports = {
   indexMainPage,
   indexDisplayPlayerInventory,
+  indexDisplayItems,
 };
