@@ -1,3 +1,5 @@
+const db = require("../db/query");
+
 const Players = [
   createPlayer(1, "gigglesbiggles", 12, 312),
   createPlayer(1, "gigglesbiggles", 12, 312),
@@ -89,6 +91,19 @@ function getAllPlayers() {
   });
 }
 
+function navBarItems(currentSelected) {
+  return {
+    items: [
+      {v:"Players",h:"/players"},
+      {v:"All Items",h:"/items"},
+      {v:"Weapons",h:"/weapons"},
+      {v:"Potions",h:"/potions"},
+      {v:"Foods",h:"/foods"}
+    ],
+    selected: currentSelected,
+  };
+}
+
 function getItemsFiltered(category) {
   const result = Items.map(item => ({ ...item, category: Categories[item.category_id - 1].name}));
 
@@ -100,7 +115,10 @@ function getItemsFiltered(category) {
 }
 
 const indexMainPage = (request, response) => {
-  response.render("index", { players: getAllPlayers() });
+  response.render("index", {
+    players: getAllPlayers(),
+    navBar: navBarItems(0)
+  });
 };
 
 const indexDisplayPlayerInventory = (request, response) => {
@@ -125,19 +143,31 @@ const indexDisplayPlayerInventory = (request, response) => {
     playerItems: resultItems, 
     player: { 
       ...player,
-      maxExperience: getMaxExpWithRespectToLevel(player.level)
+      maxExperience: getMaxExpWithRespectToLevel(player.level),
     },
+    navBar: navBarItems(0),
   });
 };
 
 const indexDisplayItems = (request, response) => {
-    const category = request.params.category;
-  if (["weapons", "potions", "foods"].includes(category)) {
-    response.render("index", { allItems: getItemsFiltered(category.slice(0, category.length - 1)) });
-  } else if (category === "items") {
-    response.render("index", { allItems: getItemsFiltered(null) });
+  const category = request.params.category;
+  let navBarIdx = 1;
+  let itemCate = null;
+  if (category !== "items") {
+    navBarIdx = ["weapons", "potions", "foods"].findIndex((cate => cate === category));
+    if (navBarIdx !== -1) {
+      itemCate = category.slice(0, category.length - 1); 
+      navBarIdx += 2;
+    } 
+  }
+
+  if (navBarIdx !== -1) {
+    response.render("index", {
+      allItems: getItemsFiltered(itemCate),
+      navBar: navBarItems(navBarIdx),
+    });
   } else {
-    response.status(404).send("Unable to GET /" + request.params.category);
+    response.status(404).send("Unable to GET /" + category);
   }
 };
 

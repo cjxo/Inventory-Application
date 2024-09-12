@@ -12,5 +12,5 @@ app.use("/", IndexRouter);
 
 const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`Server is listening at port ${PORT}.`);
+  console.log(`Server is listening at port ${PORT}. http://localhost:3000`);
 });

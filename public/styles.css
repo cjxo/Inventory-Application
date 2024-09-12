@@ -101,6 +101,7 @@ nav {
 .nav-bar > li.selected > a,
 .nav-bar a:hover {
   color: var(--hovered-text-colour);
+  text-shadow: 0px 0px 2px #5665c7;
 }
 
 .nav-bar {
@@ -110,12 +111,19 @@ nav {
   gap: 6px;
 }
 
+.player-username, .nav-bar a {
+  transition-property: color text-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.32, 0, 0.67, 0);
+}
+
 .player-username {
   color: var(--normal-text-colour);
 }
 
 .player-username:hover {
   color: var(--hovered-text-colour);
+  text-shadow: 0px 0px 2px #5665c7;
 }
 
 .player-listing-wrapper,

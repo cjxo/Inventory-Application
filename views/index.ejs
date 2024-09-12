@@ -16,11 +16,11 @@
       <div class="main-wrapper">
       <nav>
         <ul class="nav-bar">
-          <li class="selected"><a href="/">Players</a></li>
-          <li><a href="/items">All Items</a></li>
-          <li><a href="/foods">Food</a></li>
-          <li><a href="/potions">Potion</a></li>
-          <li><a href="/weapons">Weapon</a></li>
+          <% navBar.items.forEach((cate, i) => { %>
+          <li class=<%= (navBar.selected === i) ? "selected" : "" %>>
+            <a href=<%= cate.h%>><%= cate.v %></a>
+          </li>
+          <% }); %>
         </ul>
       </nav>
       <% if (locals.players) { %>
@@ -90,7 +90,7 @@
           </section>
           <% } else if (locals.allItems) { %>
           <section class="all-items">
-            <h1 class="section-title">&lt; All Items &gt;</h1>
+            <h1 class="section-title">&lt; <%= navBar.items[navBar.selected].v %> &gt;</h1>
             <ul class="listings">
               <% allItems.forEach(item => { %>
               <li>
