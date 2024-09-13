@@ -12,10 +12,10 @@ function getTimeNow() {
 const createPlayer = async (username, level, experience) => {
   const created_at = getTimeNow();
   const SQL = `
-    INSERT INTO player (username, level, experience, created_at)
-    VALUES ($1, $2, $3, $4);
+    INSERT INTO player (username, level, experience)
+    VALUES ($1, $2, $3);
   `;
-  await db.query(SQL, [username, level, experience, created_at]);
+  await db.query(SQL, [username, level, experience]);
 };
 
 const createCategory = async (name, description) => {
@@ -59,14 +59,28 @@ const updateOrAddItemToPlayer = async (playerName, itemName, quantity) => {
   };
 };
 
+const getPlayerFromID = async (ID) => {
+  const SQL = `
+    SELECT * FROM player
+    WHERE id = $1;
+  `;
+
+  try {
+    const { rows } = await db.query(SQL, [ID]);
+    return rows[0];
+  } catch (err) {
+    throw err;
+  }
+}
+
 const getAllPlayers = async () => {
   const SQL = `
     SELECT * FROM player;
   `;
 
   try {
-    const { result } = await db.query(SQL);
-    return result;
+    const { rows } = await db.query(SQL);
+    return rows;
   } catch (err) {
     console.error(err);
     throw err;
@@ -75,17 +89,47 @@ const getAllPlayers = async () => {
 
 const getItemsFiltered = async (category) => {
   const SQL = `
-    SELECT * FROM item AS i
-    INNER JOIN category AS c
-    ON i.category_id = c.id
-    WHERE c.name = $1;
+    SELECT item.name, item.description, category.name AS category
+    FROM item
+    INNER JOIN category
+    ON item.category_id = category.id
+    WHERE LOWER(category.name) LIKE $1;
+  `;
+  
+  const SQLUnfiltered = `
+    SELECT item.name, item.description, category.name AS category
+    FROM item
+    INNER JOIN category
+    ON item.category_id = category.id;
   `;
 
   try {
-    const { result } = await db.query(SQL, [category]);
-    return result;
+    if (category) {
+      const { rows } = await db.query(SQL, [category]);
+      return rows;
+    } else {
+      const { rows } = await db.query(SQLUnfiltered);
+      return rows;
+    }
   } catch (err) {
     console.error(err);
+    throw err;
+  }
+};
+
+const getItemsFromPlayerID = async (playerID) => {
+  const SQL = `
+    SELECT item.name, player_items.quantity, item.description
+    FROM player_items
+    INNER JOIN item
+    ON player_items.item_id = item.id
+    WHERE player_items.player_id = $1;
+  `;
+
+  try {
+    const { rows } = await db.query(SQL, [playerID]);
+    return rows;
+  } catch (err) {
     throw err;
   }
 };
@@ -95,5 +139,8 @@ module.exports = {
   createCategory,
   createItem,
   updateOrAddItemToPlayer,
+  getPlayerFromID,
   getAllPlayers,
+  getItemsFiltered,
+  getItemsFromPlayerID 
 };

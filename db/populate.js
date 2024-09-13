@@ -2,12 +2,16 @@ const { Client } = require("pg");
 require("dotenv").config();
 
 const SQL = `
+  DROP TABLE IF EXISTS player_items;
+  DROP TABLE IF EXISTS player;
+  DROP TABLE IF EXISTS item;
+  DROP TABLE IF EXISTS category;
+
   CREATE TABLE IF NOT EXISTS player (
     id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     username VARCHAR(96),
     level INTEGER,
-    experience INTEGER,
-    created_at VARCHAR(96)
+    experience INTEGER
   );
 
   CREATE TABLE IF NOT EXISTS category (
@@ -29,7 +33,33 @@ const SQL = `
     item_id INTEGER REFERENCES item(id),
     quantity INTEGER
   );
+
+  INSERT INTO category (name, description)
+  VALUES
+  ('Potion', 'A liquid that can be drank, usually once, immediately invoking special effects to the player who drank it.'),
+  ('Weapon', 'An item that can enhance the performance of the welder.'),
+  ('Food', 'An item that prevents the consumer from starving. It also helps in regeneration.');
+
+  INSERT INTO item (name, description, category_id)
+  VALUES
+  ('Steel Long Sword', 'Crafted with high-quality steel, the Steel Long Sword offers a balance of strength and durability.', 2),
+  ('Regeneration Pot', 'A mysterious glass vial shimmering with green liquid that swirls on its own. Consume it to regain a slow, but steady, regenerative effect that restores health.', 1),
+  ('Cooked Steak', 'A thick, juicy steak that has been expertly cooked over an open flame.', 3);
+
+  INSERT INTO player (username, level, experience)
+  VALUES
+  ('gigglesbiggles0', 12, 312),
+  ('gigglesbiggles1', 12, 312);
+
+  INSERT INTO player_items (player_id, item_id, quantity)
+  VALUES
+  (1, 1, 1),
+  (1, 2, 4),
+  (1, 3, 12);
 `;
+/*
+  
+*/
 
 async function main() {
   console.log("seeding ...");

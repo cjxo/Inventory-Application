@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node ./db/populate.js && node --watch app.js"
+    "dev": "node --watch app.js",
+    "populate": "node ./db/populate.js"
   },
   "keywords": [],
   "author": "",

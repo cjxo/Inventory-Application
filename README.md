@@ -7,7 +7,7 @@
 - [X] List all possible potions
 - [X] List all possible food
 - [X] List all possible weapon
-- [ ] Set the stage up for Postgre
+- [X] Set the stage up for Postgre
 
 - [ ] Ability To add items into a category
 - [ ] Ability to add items without a category
